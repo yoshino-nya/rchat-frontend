@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="handleLogin">
-    <div class="title">登录</div>
+  <form @submit.prevent="handleSubmit">
+    <div class="title">注册账号</div>
     <div class="field">
       <label for="username">用户名</label>
       <input
@@ -26,12 +26,23 @@
         required
       />
     </div>
+    <div class="field">
+      <label for="password">确认密码</label>
+      <input
+        id="password"
+        @input="clearError"
+        v-model.trim="form.verifyPassword"
+        type="password"
+        placeholder="请再次输入密码"
+        required
+      />
+    </div>
     <div v-if="errorMsg" class="error">
       {{ errorMsg }}
     </div>
-    <button type="submit">登录</button>
-    <div class="register-prompt">
-      <p>没有账号？<router-link to="/register">去注册</router-link></p>
+    <button type="submit">注册</button>
+    <div class="login-prompt">
+      <p>已有账号？<router-link to="/login">去登录</router-link></p>
     </div>
   </form>
 </template>
@@ -44,19 +55,23 @@ const router = useRouter()
 const form = reactive({
   username: '',
   password: '',
+  verifyPassword: '',
 })
 const errorMsg = ref('')
 const clearError = () => {
   errorMsg.value = ''
 }
-const handleLogin = async () => {
+const handleSubmit = async () => {
+  if (form.username != form.verifyPassword) {
+    errorMsg.value = '两次输入密码不一致'
+    return
+  }
   try {
-    const res = await axios.post('/api/login', form)
+    const res = await axios.post('/api/register', form)
     if (res.status === 200) {
       clearError()
-      localStorage.setItem('username', res.data.username)
-      localStorage.setItem('userId', res.data.user_id)
-      router.push('/')
+      alert('注册成功')
+      router.push('/login')
     }
   } catch (error) {
     console.log(error)
@@ -64,9 +79,6 @@ const handleLogin = async () => {
       const status = error.response?.status
       if (!status) {
         errorMsg.value = '网络错误'
-      } else if (status === 401 || status === 404) {
-        errorMsg.value = '账号或密码错误'
-        // Status::UNAUTHORIZED NOT_FOUND
       } else {
         errorMsg.value = '未知错误'
         console.log('错误:', status)
@@ -140,24 +152,22 @@ button:hover {
   text-align: center;
   min-height: 18px;
 }
-
 .title {
   text-align: center;
   font-size: 20px;
   font-weight: 600;
 }
-
-.register-prompt {
+.login-prompt {
   text-align: center;
   font-size: 14px;
 }
 
-.register-prompt router-link {
+.login-prompt router-link {
   color: #409eff;
   text-decoration: none;
 }
 
-.register-prompt router-link:hover {
+.login-prompt router-link:hover {
   text-decoration: underline;
 }
 </style>
