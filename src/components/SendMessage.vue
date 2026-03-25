@@ -61,7 +61,7 @@ const InitData = async () => {
 }
 
 const initWebSocket = async () => {
-  ws = new WebSocket(`ws://localhost:4000/ws?user_from=${currentUserId}`)
+  ws = new WebSocket(`ws://${window.location.hostname}:4000/ws?user_from=${currentUserId}`)
 
   ws.onopen = () => {
     console.log('WebSocket connection established')
@@ -131,7 +131,7 @@ const autoGrow = (e: Event) => {
   .messages-container {
     max-height: 80vh;
     overflow-y: auto;
-    padding: 10px 0;
+    padding: 10px;
     display: flex;
     flex-direction: column; /* 让消息从上到下排列 */
     gap: 12px; /* 消息间距，可选 */
@@ -154,8 +154,20 @@ const autoGrow = (e: Event) => {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    margin: 10px;
   }
   .message {
+    .content {
+      font-size: 12px;
+      border-radius: 6px;
+      padding: 5px;
+      background-color: white;
+      
+      overflow-wrap: break-word;
+      max-width: 80%;
+      text-align: justify;
+    }
+
     &.mine {
       .content {
         background-color: rgb(11, 138, 207);
@@ -168,13 +180,6 @@ const autoGrow = (e: Event) => {
       img {
         margin-left: 5px;
       }
-    }
-
-    .content {
-      font-size: 12px;
-      border-radius: 6px;
-      padding: 5px;
-      background-color: white;
     }
 
     .time {

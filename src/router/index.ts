@@ -1,4 +1,6 @@
+import FriendRequest from '@/components/FriendRequest.vue'
 import Login from '@/components/Login.vue'
+import Profile from '@/components/Profile.vue'
 import Register from '@/components/Register.vue'
 import SendMessage from '@/components/SendMessage.vue'
 import Home from '@/views/Home.vue'
@@ -11,22 +13,24 @@ const router = createRouter({
     { path: '/chat/:userId', component: SendMessage, props: true },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
+    { path: '/request', component: FriendRequest },
+    { path: '/:username', component: Profile },
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const userId = localStorage.getItem('userId')
   if (!userId) {
     if (to.path === '/login' || to.path === '/register') {
-      next()
+      return true
     } else {
-      next('/login')
+      return '/login'
     }
   } else {
     if (to.path === '/login' || to.path === '/register') {
-      next(from.fullPath || '/home')
+      return from.fullPath || '/home'
     } else {
-      next()
+      return true
     }
   }
 })

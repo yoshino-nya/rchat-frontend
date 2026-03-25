@@ -9,7 +9,7 @@ export const getUserIdByUsername = async (username: string) => {
   }
 }
 
-export const getUsernameByUserId = async (userId: number) => {
+export const getUsernameByUserId = async (userId: string) => {
   try {
     const res = await axios.get(`/api/users/id/${userId}`)
     return res.data.username
