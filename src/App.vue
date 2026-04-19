@@ -1,9 +1,10 @@
-<script setup lang="ts">
-import SendMessage from './components/SendMessage.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <router-view></router-view>
+  <Suspense>
+    <router-view />
+  </Suspense>
 </template>
+<script setup lang="ts"></script>
 
 <style scoped></style>

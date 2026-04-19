@@ -5,7 +5,7 @@
       <div class="request">
         <img src="/avatar.jpg" alt="" />
         <div class="info">
-          <div class="name" @click="router.push(`/${req.name}`)">{{ req.name }}</div>
+          <div class="name" @click="router.push(`/profile/${req.name}`)">{{ req.name }}</div>
           <div class="msg" v-if="currentUserId">
             {{ req.user_from === currentUserId ? '正在验证你的申请' : '请求添加为好友' }}
           </div>
@@ -81,7 +81,6 @@ const reject = async (id: number) => {
 <style scoped lang="scss">
 .container {
   font-size: 16px;
-  max-width: 800px;
   background-color: #e3e3e3;
   display: flex;
   justify-content: center;
@@ -92,8 +91,10 @@ const reject = async (id: number) => {
     width: 90%;
     border-radius: 8px;
     display: flex;
+    align-items: center;
     img {
       width: 50px;
+      // height: 50px;
       border-radius: 50%;
       margin: 5px;
     }

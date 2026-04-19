@@ -62,7 +62,7 @@ const clearError = () => {
   errorMsg.value = ''
 }
 const handleSubmit = async () => {
-  if (form.username != form.verifyPassword) {
+  if (form.password != form.verifyPassword) {
     errorMsg.value = '两次输入密码不一致'
     return
   }

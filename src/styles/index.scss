@@ -1,0 +1,7 @@
+@use './mixins.scss';
+@use './components/button.scss';
+@use './components/link.scss';
+@import 'lxgw-wenkai-webfont/style.css';
+* {
+  font-family: 'LXGW WenKai';
+}

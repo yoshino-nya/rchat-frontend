@@ -1,0 +1,19 @@
+@use '../mixins.scss' as *;
+
+.btn {
+  border: none;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  &.primary {
+    &.primary {
+      background: #12b7f5;
+      color: white;
+      &:hover {
+        background: #0ea0d8;
+      }
+    }
+  }
+}

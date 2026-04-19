@@ -1,9 +1,17 @@
 // models/message.ts
 
 export interface ChatMessage {
-  user_from: number
-  user_to: number
+  sender_id: number
+  session_id: string
   content: string
-  created_time: string | null
 }
 // user_id is i32 number
+
+export interface ChatMessageResponse {
+  id: number
+  sender_id: number
+  content: string
+  session_id: string
+  created_time: string
+  sender_avatar: string
+}
