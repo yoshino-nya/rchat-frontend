@@ -1,8 +1,8 @@
-import axios from 'axios'
+import api from '@/api'
 
 export const getUserIdByUsername = async (username: string) => {
   try {
-    const res = await axios.get(`/api/users/name/${username}`)
+    const res = await api.get(`/api/users/name/${username}`)
     return res.data.userId
   } catch (e) {
     console.log(e)
@@ -11,7 +11,7 @@ export const getUserIdByUsername = async (username: string) => {
 
 export const getUsernameByUserId = async (userId: string) => {
   try {
-    const res = await axios.get(`/api/users/id/${userId}`)
+    const res = await api.get(`/api/users/id/${userId}`)
     return res.data.username
   } catch (e) {
     console.log(e)

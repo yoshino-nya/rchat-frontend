@@ -2,7 +2,7 @@
   <div class="chatList">
     <div>会话列表</div>
     <div class="session" v-for="s in sessions" :key="s.id" @click="onclick(s.uuid)">
-      <img src="/avatar.jpg" />
+      <img :src="s.avatar" />
       <div class="info">
         <div class="title">{{ s.name }}</div>
         <div class="last_msg">
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { type SessionResponse } from '@/models/session'
 import { formatTime } from '@/utils/date'
-import axios from 'axios'
+import api from '@/api'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const currentUserId = localStorage.getItem('userId')
@@ -26,7 +26,7 @@ const sessions = ref<SessionResponse[]>([])
 const router = useRouter()
 
 let fetchData = async () => {
-  let res = await axios.get(`/api/users/${currentUserId}/sessions`)
+  let res = await api.get(`/api/users/${currentUserId}/sessions`)
   console.log(res.data.data)
   sessions.value = res.data.data
 

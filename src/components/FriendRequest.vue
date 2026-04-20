@@ -3,9 +3,11 @@
     Friend Request List
     <div class="container" v-for="req in friendRequests" :key="req.id">
       <div class="request">
-        <img src="/avatar.jpg" alt="" />
+        <img :src="req.user_avatar" alt="" />
         <div class="info">
-          <div class="name" @click="router.push(`/profile/${req.name}`)">{{ req.name }}</div>
+          <div class="name" @click="router.push(`/profile/${req.user_name}`)">
+            {{ req.user_name }}
+          </div>
           <div class="msg" v-if="currentUserId">
             {{ req.user_from === currentUserId ? '正在验证你的申请' : '请求添加为好友' }}
           </div>
@@ -35,7 +37,7 @@
 <script setup lang="ts">
 import { getUserIdByUsername, getUsernameByUserId } from '@/api/user'
 import { formatTime } from '@/utils/date'
-import axios from 'axios'
+import api from '@/api'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 const currentUsername = localStorage.getItem('username')
@@ -47,34 +49,25 @@ interface friendRequestResponse {
   created_time: string
   status: string
   id: number
-  name: string
+  user_name: string
+  user_avatar: string
 }
 const friendRequests = ref<friendRequestResponse[]>([])
 const fetchData = async () => {
   console.log(currentUserId)
-  let res = await axios.get<friendRequestResponse[]>(`/api/users/${currentUserId}/friend_requests`)
-  friendRequests.value = res.data.reverse()
+  let res = await api.get(`/api/users/${currentUserId}/friend_requests`)
+  friendRequests.value = res.data.data
   console.log(friendRequests.value)
-  for (const req of friendRequests.value) {
-    req.user_from = String(req.user_from)
-    req.user_to = String(req.user_to)
-    if (req.user_from === currentUserId) {
-      req.name = await getUsernameByUserId(req.user_to)
-    } else {
-      req.name = await getUsernameByUserId(req.user_from)
-    }
-    console.log(req.name)
-  }
 }
 onMounted(async () => {
   await fetchData()
 })
 const accept = async (id: number) => {
-  let res = await axios.post(`/api/friend_request/${id}/accept`)
+  let res = await api.post(`/api/friend_request/${id}/accept`)
   await fetchData()
 }
 const reject = async (id: number) => {
-  let res = await axios.post(`/api/friend_request/${id}/reject`)
+  let res = await api.post(`/api/friend_request/${id}/reject`)
   await fetchData()
 }
 </script>

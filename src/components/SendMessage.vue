@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
+import api from '@/api'
 import { type ChatMessage, type ChatMessageResponse } from '@/models/message'
 import { User } from '@/models/user'
 import { useRoute } from 'vue-router'
@@ -114,10 +114,10 @@ const open = ref(false)
 let ws: WebSocket | null
 
 const InitData = async () => {
-  let res = await axios.get(`/api/sessions/${sessionId}/messages`)
+  let res = await api.get(`/api/sessions/${sessionId}/messages`)
   messages.value = res.data.data
   console.log(res.data.data)
-  res = await axios.get(`/api/sessions/${sessionId}`)
+  res = await api.get(`/api/sessions/${sessionId}`)
   console.log(res.data.data)
   sessionName.value = res.data.data.name
 
@@ -187,7 +187,7 @@ const autoGrow = (e: Event) => {
 }
 const editName = ref(sessionName)
 const onsubmit = async () => {
-  let res = await axios.patch(`/api/sessions/${sessionId}`, {
+  let res = await api.patch(`/api/sessions/${sessionId}`, {
     name: editName.value,
   })
   if (res.status === 200) {

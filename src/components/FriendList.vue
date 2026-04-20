@@ -4,11 +4,11 @@
     <div>
       friend of {{ friends.length }} users
       <div class="info" v-for="friend in friends">
-        <img src="/avatar.jpg" alt="" />
-        <div class="username" @click="router.push(`/profile/${friend.username}`)">
-          {{ friend.username }}
+        <img :src="friend.friend_avatar" alt="" />
+        <div class="username" @click="router.push(`/profile/${friend.friend_name}`)">
+          {{ friend.friend_name }}
         </div>
-        <button class="btn primary" style="margin-left: auto" @click="onclick(friend.id)">
+        <button class="btn primary" style="margin-left: auto" @click="onclick(friend.friend_id)">
           发消息
         </button>
       </div>
@@ -17,26 +17,22 @@
 </template>
 <script setup lang="ts">
 import { getSessionId } from '@/api/getSessionId'
-import { getUsernameByUserId } from '@/api/user'
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '@/api'
 
 interface frinedResponse {
-  id: number
-  username: string
+  friend_id: number
+  friend_name: string
+  friend_avatar: string
+  created_time: string
 }
 const currentUsername = localStorage.getItem('username')
 const currentUserId = localStorage.getItem('userId')
 const friends = ref<frinedResponse[]>([])
 const fetchData = async () => {
-  let res = await axios.get(`/api/users/${currentUserId}/friends`)
-  // 目前返回的是 i32 数组
-  for (const id of res.data) {
-    friends.value.push({ id: id, username: await getUsernameByUserId(String(id)) })
-  }
-
-  console.log(res.data)
+  let res = await api.get(`/api/users/${currentUserId}/friends/details`)
+  friends.value = res.data.data
 }
 const router = useRouter()
 const onclick = async (id: number) => {

@@ -38,10 +38,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth'
 import { User } from '@/models/user'
+import api from '@/api'
 const router = useRouter()
 const { setUser } = useAuth()
 const form = reactive({
@@ -54,16 +55,18 @@ const clearError = () => {
 }
 const handleLogin = async () => {
   try {
-    const res = await axios.post('/api/login', form)
+    const res = await api.post('/api/login', form)
     console.log(res.data)
     if (res.status === 200) {
       clearError()
+      console.log(res.data.data)
       setUser({
-        id: res.data.user_id,
-        username: res.data.username,
+        id: res.data.data.user_id,
+        username: res.data.data.username,
+        token: res.data.data.token,
       })
-      localStorage.setItem('userId', res.data.user_id)
-      localStorage.setItem('username', res.data.username)
+      localStorage.setItem('userId', res.data.data.user_id)
+      localStorage.setItem('username', res.data.data.username)
       router.push('/')
     }
   } catch (error) {

@@ -7,4 +7,5 @@ export interface SessionResponse {
   last_msg_time: string
   type: string
   uuid: string
+  avatar: string
 }

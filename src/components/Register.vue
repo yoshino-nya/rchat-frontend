@@ -67,7 +67,7 @@ const handleSubmit = async () => {
     return
   }
   try {
-    const res = await axios.post('/api/register', form)
+    const res = await api.post('/api/register', form)
     if (res.status === 200) {
       clearError()
       alert('注册成功')

@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
+import api from '@/api'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from '@/utils/toast'
@@ -28,16 +28,16 @@ const isFriend = ref(false)
 
 const fetchData = async () => {
   // get username
-  let res = await axios.get(`/api/users/name/${username}`)
+  let res = await api.get(`/api/users/name/${username}`)
   user.value = res.data.data
   // user.id is i32
 
   // get friendship state
-  res = await axios.get(`/api/relationships/${currentUserId}/${user.value.id}`)
+  res = await api.get(`/api/relationships/${currentUserId}/${user.value.id}`)
   isFriend.value = res.data.is_friend
 }
 const sendRequest = async () => {
-  let res = await axios.post(`/api/friend_request`, {
+  let res = await api.post(`/api/friend_request`, {
     user_from: Number(currentUserId),
     user_to: user.value.id,
   })

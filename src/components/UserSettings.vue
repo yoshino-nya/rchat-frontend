@@ -44,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
+import { useAuth } from '@/stores/auth'
+import api from '@/api'
 import { ref } from 'vue'
 import { Cropper, CircleStencil } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
@@ -52,7 +53,7 @@ import 'vue-advanced-cropper/dist/style.css'
 const cropperRef = ref<any>(null)
 const imgSrc = ref<string>('')
 const previewUrl = ref<string>('')
-
+const { state } = useAuth()
 // 选择图片
 const onFileChange = (e: Event) => {
   const file = (e.target as HTMLInputElement).files?.[0]
@@ -78,8 +79,8 @@ const cropAndUpload = async () => {
 
       const formData = new FormData()
       formData.append('avatar', blob, 'avatar.jpg')
-
-      const res = await axios.post('/api/upload/avatar', formData, {
+      console.log(state.user?.id)
+      const res = await api.put(`/api/users/${state.user?.id}/avatar`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

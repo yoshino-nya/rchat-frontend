@@ -1,7 +1,7 @@
-import axios from 'axios'
+import api from '@/api'
 
 export async function getSessionId(user_id1: number, user_id2: number) {
-  let res = await axios.post(`/api/sessions/private`, {
+  let res = await api.post(`/api/sessions/private`, {
     user_id1,
     user_id2,
   })

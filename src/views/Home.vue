@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { toast } from '@/utils/toast'
-import axios from 'axios'
+import api from '@/api'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -62,7 +62,7 @@ const router = useRouter()
 const keyWord = ref('')
 const onSubmit = async () => {
   try {
-    const res = await axios.get(`/api/users/name/${keyWord.value}`)
+    const res = await api.get(`/api/users/name/${keyWord.value}`)
     console.log(res.status)
     router.push(`/profile/${keyWord.value}`)
     keyWord.value = ''
