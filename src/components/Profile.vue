@@ -6,7 +6,13 @@
         {{ user.username }}
       </div>
     </div>
-    <button class="btn primary" v-if="Number(currentUserId) === user.id">编辑资料</button>
+    <button
+      class="btn primary"
+      v-if="Number(currentUserId) === user.id"
+      @click="router.push(`/profile/${state.user?.username}/settings`)"
+    >
+      编辑资料
+    </button>
     <button class="btn primary" v-else-if="isFriend" @click="onclick(user.id)">发消息</button>
     <button class="btn primary" @click="sendRequest()" v-else>加好友</button>
   </div>
@@ -18,12 +24,14 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from '@/utils/toast'
 import { getSessionId } from '@/api/getSessionId'
+import { useAuth } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
 let username = route.params.username
 const user = ref()
 const currentUserId = localStorage.getItem('userId')
+const { state } = useAuth()
 const isFriend = ref(false)
 
 const fetchData = async () => {

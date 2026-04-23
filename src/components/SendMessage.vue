@@ -117,9 +117,9 @@ const InitData = async () => {
   let res = await api.get(`/api/sessions/${sessionId}/messages`)
   messages.value = res.data.data
   console.log(res.data.data)
-  res = await api.get(`/api/sessions/${sessionId}`)
+  res = await api.get(`/api/sessions/${sessionId}/name`)
   console.log(res.data.data)
-  sessionName.value = res.data.data.name
+  sessionName.value = res.data.data
 
   scrollToBottom()
 }
@@ -195,6 +195,7 @@ const onsubmit = async () => {
     open.value = false
     toast.success('修改成功')
   } else {
+    console.log(res)
     toast.error('修改失败')
   }
 }
